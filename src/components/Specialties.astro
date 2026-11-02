@@ -1,0 +1,202 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import { specialties, whatsapp, specialtyMessage } from '../data/site';
+---
+
+<section class="section specs" id="especialidades" aria-labelledby="specs-title">
+  <span class="dots specs__dots" aria-hidden="true"></span>
+  <div class="container">
+    <div class="specs__head">
+      <div class="section-head" data-reveal>
+        <span class="eyebrow">Especialidades</span>
+        <h2 id="specs-title" class="title">
+          Especialidades para cuidar de <span class="hl">você por inteiro.</span>
+        </h2>
+      </div>
+      <p class="lead specs__lead" data-reveal style="--d:100ms">
+        Uma equipe multidisciplinar preparada para oferecer cuidado, saúde e qualidade de vida em
+        diferentes fases da sua vida.
+      </p>
+    </div>
+
+    <ul class="specs__grid" role="list">
+      {specialties.map((s, i) =>
+        s.featured ? (
+          <li class="spec spec--featured" data-reveal style={`--d:${(i % 4) * 70}ms`}>
+            <article aria-labelledby={`spec-${s.slug}`}>
+              <Picture
+                src={s.image}
+                formats={['avif', 'webp']}
+                widths={s.image.width < 800 ? [s.image.width] : [480, 760]}
+                sizes="(max-width: 900px) 100vw, 640px"
+                alt={s.imageAlt}
+                class="spec__bg reveal-img"
+                style={s.focus ? `object-position:${s.focus}` : undefined}
+              />
+              <div class="spec__overlay">
+                <span class="spec__badge"><Icon name="sparkle" size={15} /> Especialidade em destaque</span>
+                <span class="spec__icon spec__icon--glass"><Icon name={s.icon} size={28} /></span>
+                <h3 id={`spec-${s.slug}`}>{s.name}</h3>
+                <p>{s.description}</p>
+                <a class="btn btn--light" href={whatsapp(specialtyMessage(s.name))} target="_blank" rel="noopener" aria-label={`Agendar atendimento de ${s.name} pelo WhatsApp`}>
+                  <Icon name="whatsapp" size={19} /> Agendar atendimento
+                </a>
+              </div>
+            </article>
+          </li>
+        ) : (
+          <li class="spec" data-reveal style={`--d:${(i % 4) * 70}ms`}>
+            <article aria-labelledby={`spec-${s.slug}`}>
+              <div class="spec__media">
+                <Picture
+                  src={s.image}
+                  formats={['avif', 'webp']}
+                  widths={s.image.width < 800 ? [s.image.width] : [400, 760]}
+                  sizes="(max-width: 560px) 92vw, (max-width: 1200px) 45vw, 300px"
+                  alt={s.imageAlt}
+                  class="reveal-img"
+                  style={s.focus ? `object-position:${s.focus}` : undefined}
+                />
+                <span class="spec__num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              </div>
+              <div class="spec__body">
+                <span class="spec__icon"><Icon name={s.icon} size={24} /></span>
+                <h3 id={`spec-${s.slug}`}>{s.name}</h3>
+                <p>{s.description}</p>
+                <a class="spec__link" href={whatsapp(specialtyMessage(s.name))} target="_blank" rel="noopener" aria-label={`Agendar atendimento de ${s.name} pelo WhatsApp`}>
+                  Agendar atendimento <Icon name="arrowUpRight" size={17} />
+                </a>
+              </div>
+            </article>
+          </li>
+        ),
+      )}
+
+      <li class="spec spec--help" data-reveal>
+        <div>
+          <span class="spec__icon spec__icon--white"><Icon name="speech" size={24} /></span>
+          <h3>Não sabe qual especialidade procurar?</h3>
+          <p>Fale com a nossa equipe. Vamos entender sua necessidade e orientar o melhor caminho.</p>
+        </div>
+        <a class="btn btn--whats btn--sm" href={whatsapp('Olá! Gostaria de uma orientação sobre qual especialidade é a mais indicada para mim.')} target="_blank" rel="noopener">
+          <Icon name="whatsapp" size={18} /> Pedir orientação
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<style>
+  .specs {
+    background:
+      radial-gradient(900px 500px at 100% 0%, rgba(197, 178, 240, .28), transparent 60%),
+      linear-gradient(180deg, var(--sky-soft) 0%, #f3f0fd 100%);
+    overflow: hidden;
+  }
+  .specs__dots { color: var(--blue); left: 3%; top: 70px; }
+  .specs__head {
+    display: grid; grid-template-columns: 1.1fr 1fr; gap: 1.5rem 4rem; align-items: end;
+    margin-bottom: clamp(2.5rem, 5vw, 3.75rem);
+  }
+  .specs__lead { margin-top: 0; }
+
+  .specs__grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.4rem;
+    grid-auto-flow: dense;
+  }
+
+  .spec > article, .spec--help {
+    position: relative; height: 100%; display: flex; flex-direction: column;
+    background: #fff; border-radius: var(--r-lg); overflow: hidden;
+    box-shadow: 0 1px 0 rgba(15, 26, 54, .04), 0 10px 30px -18px rgba(23, 60, 130, .25);
+    transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .spec > article::after {
+    content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+    border: 1.5px solid transparent; transition: border-color .3s;
+  }
+  .spec:not(.spec--featured) > article:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+  .spec:not(.spec--featured) > article:hover::after { border-color: rgba(122, 69, 200, .25); }
+
+  .spec__media { position: relative; aspect-ratio: 16 / 11; overflow: hidden; background: var(--sky-soft); }
+  .spec__media :global(img) { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+  .spec > article:hover .spec__media :global(img) { transform: scale(1.06); }
+  .spec__media::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(180deg, transparent 55%, rgba(13, 63, 127, .28));
+  }
+  .spec__num {
+    position: absolute; top: .9rem; right: .9rem; z-index: 1;
+    padding: .25rem .6rem; border-radius: 999px; background: rgba(255,255,255,.88);
+    font-size: .75rem; font-weight: 800; color: var(--blue-deep); letter-spacing: .05em;
+  }
+
+  .spec__body { position: relative; display: flex; flex-direction: column; flex: 1; padding: 0 1.4rem 1.5rem; }
+  .spec__icon {
+    display: grid; place-items: center; width: 54px; height: 54px; border-radius: 16px;
+    background: linear-gradient(145deg, #fff, #f1ecfd); color: var(--purple);
+    box-shadow: 0 10px 22px -10px rgba(74, 38, 144, .45);
+    margin-top: -27px; position: relative; z-index: 1;
+    transition: background .35s, color .35s, transform .35s var(--ease);
+  }
+  .spec > article:hover .spec__icon { background: var(--grad-brand); color: #fff; transform: rotate(-6deg); }
+  .spec__body h3 { font-size: 1.14rem; margin: 1rem 0 .55rem; letter-spacing: -.015em; }
+  .spec__body p { font-size: .94rem; line-height: 1.6; color: var(--muted); flex: 1; }
+  .spec__link {
+    display: inline-flex; align-items: center; gap: .35rem; margin-top: 1.2rem; align-self: flex-start;
+    font-weight: 700; font-size: .94rem; color: var(--blue); padding: .2rem 0;
+    border-bottom: 1.5px solid rgba(31, 127, 214, .25); transition: color .2s, border-color .2s, gap .25s;
+  }
+  .spec__link:hover { color: var(--purple); border-color: var(--purple); gap: .6rem; }
+
+  /* Destaque: Fisioterapia Pélvica */
+  .spec--featured { grid-column: span 2; grid-row: span 2; }
+  .spec--featured > article { color: #fff; background: linear-gradient(160deg, #5a2da8 0%, #3b2190 55%, #2a1a6e 100%); }
+  .spec--featured :global(.spec__bg) {
+    display: block; width: 100%; aspect-ratio: 2 / 1; flex: none; object-fit: cover;
+    transition: transform 1s var(--ease);
+    -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent);
+            mask-image: linear-gradient(180deg, #000 72%, transparent);
+  }
+  .spec--featured > article:hover :global(.spec__bg) { transform: scale(1.03); }
+  @media (min-width: 901px) { .spec--featured :global(.spec__bg) { aspect-ratio: 4 / 3; } }
+  .spec__overlay {
+    position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: .9rem;
+    justify-content: center; padding: .5rem clamp(1.6rem, 3vw, 2.6rem) clamp(1.6rem, 3vw, 2.6rem);
+  }
+  .spec__badge {
+    display: inline-flex; align-items: center; gap: .4rem;
+    padding: .45rem .9rem; border-radius: 999px; font-size: .8rem; font-weight: 800;
+    background: rgba(255,255,255,.92); color: var(--purple-deep);
+  }
+  .spec__icon--glass { margin: 0; background: rgba(255,255,255,.16); color: #fff; backdrop-filter: blur(6px); box-shadow: none; border: 1px solid rgba(255,255,255,.3); }
+  .spec--featured h3 { color: #fff; font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.2rem); max-width: 18ch; }
+  .spec--featured p { color: rgba(255,255,255,.88); max-width: 46ch; font-size: 1.02rem; }
+  .spec--featured .btn { margin-top: .5rem; }
+
+  /* Card de orientação */
+  .spec--help {
+    justify-content: space-between; gap: 1.5rem; padding: 1.8rem 1.5rem;
+    background: var(--grad-deep); color: rgba(255,255,255,.85);
+  }
+  .spec--help h3 { color: #fff; font-size: 1.25rem; margin: 1.1rem 0 .6rem; }
+  .spec--help p { font-size: .95rem; }
+  .spec__icon--white { margin: 0; background: rgba(255,255,255,.14); color: #fff; box-shadow: none; }
+  .spec--help .btn { align-self: flex-start; }
+
+  @media (max-width: 1200px) {
+    .specs__grid { grid-template-columns: repeat(3, 1fr); }
+    .spec--help { grid-column: 1 / -1; flex-direction: row; align-items: center; }
+  }
+  @media (max-width: 900px) {
+    .specs__head { grid-template-columns: 1fr; }
+    .specs__grid { grid-template-columns: repeat(2, 1fr); gap: 1.1rem; }
+    .spec--featured { grid-column: 1 / -1; grid-row: span 1; }
+    .spec--help { grid-column: span 1; flex-direction: column; align-items: stretch; }
+  }
+  @media (max-width: 560px) {
+    .specs__grid { grid-template-columns: 1fr; }
+    .spec--help { grid-column: auto; }
+  }
+</style>

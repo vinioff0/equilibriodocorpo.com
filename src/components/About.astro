@@ -1,0 +1,146 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import aboutImg from '../assets/img/clinica/clinica-recepcao.jpg';
+import aboutImg2 from '../assets/img/clinica/pilates.jpg';
+import { whatsapp } from '../data/site';
+
+const highlights = [
+  'Atendimento humanizado',
+  'Ambiente acolhedor',
+  'Equipe multidisciplinar',
+  'Cuidado individualizado',
+  'Diversas especialidades em um só lugar',
+];
+---
+
+<section class="section about" id="a-clinica" aria-labelledby="about-title">
+  <div class="container">
+    <div class="about__panel">
+      <div class="about__media">
+        <div class="about__photo" data-reveal="left">
+          <Picture
+            src={aboutImg}
+            formats={['avif', 'webp']}
+            widths={[aboutImg.width]}
+            sizes="(max-width: 900px) 100vw, 720px"
+            alt="Recepção da Clínica Equilíbrio do Corpo, com o logotipo da clínica na parede"
+            class="reveal-img"
+          />
+        </div>
+
+        <div class="about__cards">
+          <article class="mini-card mini-card--brand" data-reveal style="--d:120ms">
+            <span class="mini-card__icon"><Icon name="hands" size={22} /></span>
+            <h3>Cuidado que acolhe</h3>
+            <p>Cada pessoa merece um cuidado especial, com atenção individualizada do início ao fim.</p>
+          </article>
+          <article class="mini-card" data-reveal style="--d:220ms">
+            <span class="mini-card__icon mini-card__icon--lilac"><Icon name="users" size={22} /></span>
+            <h3>Várias áreas, um só lugar</h3>
+            <p>Diferentes especialidades reunidas para cuidar de você de forma integrada.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="about__body">
+        <div data-reveal>
+          <span class="eyebrow">A Clínica</span>
+          <h2 id="about-title" class="title">
+            <span class="hl">Equilíbrio</span>, cuidado e <span class="hl-2">qualidade de vida.</span>
+          </h2>
+          <div class="about__thumb">
+            <Picture
+              src={aboutImg2}
+              formats={['avif', 'webp']}
+              widths={[aboutImg2.width]}
+              sizes="280px"
+              alt="Sala de Pilates da clínica com aparelhos e atendimento em andamento"
+            />
+          </div>
+        </div>
+
+        <div data-reveal style="--d:120ms">
+          <p class="about__text">
+            Na Clínica Equilíbrio do Corpo, acreditamos que cada pessoa merece um cuidado especial.
+            Reunimos diferentes especialidades em um ambiente acolhedor, com profissionais dedicados a
+            proporcionar atenção individualizada e contribuir para sua qualidade de vida.
+          </p>
+          <ul class="about__list">
+            {highlights.map((h) => (
+              <li><span class="check"><Icon name="check" size={16} /></span>{h}</li>
+            ))}
+          </ul>
+          <div class="about__actions">
+            <a class="btn btn--primary" href={whatsapp()} target="_blank" rel="noopener">
+              <Icon name="whatsapp" size={20} /> Fale com a clínica
+            </a>
+            <a class="link-arrow" href="#especialidades">Ver especialidades <Icon name="arrow" size={18} /></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about__panel {
+    position: relative; background: #fff; border-radius: var(--r-xl);
+    box-shadow: var(--shadow-md); padding: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  .about__media { position: relative; display: grid; grid-template-columns: 1.35fr 1fr; gap: 1.5rem; align-items: end; }
+  .about__photo {
+    border-radius: 32px; overflow: hidden; aspect-ratio: 2 / 1; background: var(--sky-soft);
+  }
+  .about__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
+
+  .about__cards {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem;
+    margin-left: -9rem; margin-bottom: 2.5rem; position: relative; z-index: 1;
+  }
+  .mini-card {
+    background: #fff; border-radius: var(--r-md); padding: 1.6rem 1.4rem;
+    box-shadow: var(--shadow-lg);
+  }
+  .mini-card h3 { font-size: 1.12rem; margin: 1rem 0 .5rem; }
+  .mini-card p { font-size: .95rem; line-height: 1.55; }
+  .mini-card--brand { background: linear-gradient(145deg, #1aa6e4, #2f7fdb); color: rgba(255,255,255,.88); }
+  .mini-card--brand h3 { color: #fff; }
+  .mini-card__icon {
+    display: grid; place-items: center; width: 46px; height: 46px; border-radius: 14px;
+    background: rgba(255,255,255,.18); color: #fff;
+  }
+  .mini-card__icon--lilac { background: var(--lilac-soft); color: var(--purple); }
+
+  .about__body {
+    display: grid; grid-template-columns: 1fr 1.1fr; gap: clamp(2rem, 5vw, 5rem);
+    padding: clamp(2rem, 5vw, 4rem) clamp(.75rem, 3.5vw, 3rem) clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .about__thumb {
+    margin-top: 2rem; width: min(280px, 100%); aspect-ratio: 4 / 3; border-radius: 24px; overflow: hidden;
+    box-shadow: var(--shadow-md); border: 5px solid #fff; transform: rotate(-2.5deg);
+  }
+  .about__thumb :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .about__text { font-size: 1.12rem; color: var(--text); }
+  .about__list { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem 1.25rem; margin-top: 1.8rem; }
+  .about__list li { display: flex; align-items: center; gap: .7rem; font-weight: 700; color: var(--ink); font-size: .98rem; line-height: 1.35; }
+  .check {
+    flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%;
+    background: var(--grad-soft); color: var(--blue);
+  }
+  .about__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.2rem 1.8rem; margin-top: 2.2rem; }
+
+  @media (max-width: 1024px) {
+    .about__media { grid-template-columns: 1fr; }
+    .about__cards { margin: -4.5rem 1rem 0; }
+  }
+  @media (max-width: 860px) {
+    .about__body { grid-template-columns: 1fr; }
+    .about__thumb { display: none; }
+  }
+  @media (max-width: 600px) {
+    .about__cards { grid-template-columns: 1fr; margin: -3rem .5rem 0; }
+    .about__list { grid-template-columns: 1fr; }
+  }
+</style>

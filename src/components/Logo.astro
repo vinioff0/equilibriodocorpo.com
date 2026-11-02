@@ -1,0 +1,53 @@
+---
+/**
+ * Logotipo provisório (símbolo + nome).
+ * Para usar o logotipo oficial, substitua este componente por uma <img> do arquivo da marca.
+ */
+interface Props {
+  variant?: 'color' | 'light';
+  class?: string;
+}
+const { variant = 'color', class: className } = Astro.props;
+const id = `lg-${Math.random().toString(36).slice(2, 8)}`;
+---
+
+<span class:list={['logo', `logo--${variant}`, className]}>
+  <svg class="logo__mark" viewBox="0 0 48 48" width="44" height="44" aria-hidden="true">
+    <defs>
+      <linearGradient id={`${id}-p`} x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#9B6BE0" />
+        <stop offset="1" stop-color="#5A2DA8" />
+      </linearGradient>
+      <linearGradient id={`${id}-c`} x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#18B4EA" />
+        <stop offset="1" stop-color="#2F7FDB" />
+      </linearGradient>
+    </defs>
+    <rect width="48" height="48" rx="14" fill={variant === 'light' ? 'rgba(255,255,255,.1)' : '#F4F0FD'} />
+    <g fill="none" stroke-linecap="round">
+      <path d="M9 19.5c8 2.6 17.5 1.6 29-7" stroke={variant === 'light' ? '#CDB8F5' : '#B99BE9'} stroke-width="3.2" />
+      <path d="M31 17.5c-5.5 6-8 14-17.5 23.5" stroke={variant === 'light' ? '#ffffff' : `url(#${id}-p)`} stroke-width="4.6" />
+      <path d="M25.5 28.5c4 1.8 7 5.6 8.3 11.5" stroke={`url(#${id}-c)`} stroke-width="3.2" />
+    </g>
+    <circle cx="32.5" cy="9.5" r="3.8" fill={variant === 'light' ? '#CDB8F5' : '#7A45C8'} />
+  </svg>
+  <span class="logo__text">
+    <span class="logo__small">Clínica</span>
+    <span class="logo__name">Equilíbrio <em>do Corpo</em></span>
+  </span>
+</span>
+
+<style>
+  .logo { display: inline-flex; align-items: center; gap: .7rem; line-height: 1; }
+  .logo__mark { flex: none; }
+  .logo__text { display: flex; flex-direction: column; gap: .2rem; }
+  .logo__small {
+    font-size: .68rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+    color: var(--purple);
+  }
+  .logo__name { font-size: 1.12rem; font-weight: 800; color: var(--purple-deep); letter-spacing: -.01em; }
+  .logo__name em { font-style: normal; color: var(--blue); }
+  .logo--light .logo__small { color: #CDB8F5; }
+  .logo--light .logo__name { color: #fff; }
+  .logo--light .logo__name em { color: #8FD8F8; }
+</style>

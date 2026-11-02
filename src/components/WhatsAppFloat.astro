@@ -1,0 +1,34 @@
+---
+import Icon from './Icon.astro';
+import { whatsapp } from '../data/site';
+---
+
+<a class="wa-float" href={whatsapp()} target="_blank" rel="noopener" aria-label="Conversar com a clínica pelo WhatsApp">
+  <span class="wa-float__label">Fale conosco</span>
+  <span class="wa-float__btn"><Icon name="whatsapp" size={30} /></span>
+</a>
+
+<style>
+  .wa-float {
+    position: fixed; right: clamp(1rem, 2.5vw, 1.75rem); bottom: clamp(1rem, 2.5vw, 1.75rem); z-index: 60;
+    display: flex; align-items: center; gap: .6rem;
+  }
+  .wa-float__btn {
+    position: relative; display: grid; place-items: center; width: 62px; height: 62px; border-radius: 50%;
+    background: #25d366; color: #fff; box-shadow: 0 14px 30px -10px rgba(37, 211, 102, .75);
+    transition: transform .3s var(--ease);
+  }
+  .wa-float__btn::before {
+    content: ''; position: absolute; inset: 0; border-radius: 50%; background: #25d366; z-index: -1;
+    animation: wa-ping 2.6s ease-out infinite;
+  }
+  .wa-float__label {
+    padding: .55rem .95rem; border-radius: 999px; background: #fff; color: var(--ink);
+    font-weight: 700; font-size: .88rem; box-shadow: var(--shadow-md);
+    opacity: 0; transform: translateX(10px); transition: opacity .3s, transform .3s var(--ease); pointer-events: none;
+  }
+  .wa-float:hover .wa-float__btn, .wa-float:focus-visible .wa-float__btn { transform: scale(1.07); }
+  .wa-float:hover .wa-float__label, .wa-float:focus-visible .wa-float__label { opacity: 1; transform: none; }
+  @keyframes wa-ping { 0% { transform: scale(1); opacity: .55; } 80%, 100% { transform: scale(1.5); opacity: 0; } }
+  @media (max-width: 600px) { .wa-float__label { display: none; } .wa-float__btn { width: 56px; height: 56px; } }
+</style>

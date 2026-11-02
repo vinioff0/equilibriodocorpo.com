@@ -1,0 +1,67 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import img from '../assets/img/clinica/fisioterapia-atendimento.jpg';
+import { whatsapp, links, clinic } from '../data/site';
+---
+
+<section class="section cta" aria-labelledby="cta-title">
+  <div class="container">
+    <div class="cta__panel" data-reveal="zoom">
+      <svg class="cta__wave" viewBox="0 0 600 600" aria-hidden="true">
+        <path d="M421 79c62 42 115 117 109 193-6 75-71 150-146 192-75 43-161 52-222 15C101 442 65 360 72 287c7-73 57-137 116-181 60-44 171-69 233-27Z" fill="rgba(255,255,255,.12)" />
+      </svg>
+
+      <div class="cta__content">
+        <span class="eyebrow eyebrow--light">Agende sua avaliação</span>
+        <h2 id="cta-title" class="cta__title">Cuide de você. Seu corpo merece esse equilíbrio.</h2>
+        <p class="cta__text">Entre em contato com nossa equipe e descubra como podemos ajudar você.</p>
+        <div class="cta__actions">
+          <a class="btn btn--light" href={whatsapp('Olá! Gostaria de agendar meu atendimento na Clínica Equilíbrio do Corpo.')} target="_blank" rel="noopener">
+            <Icon name="whatsapp" size={20} /> Agendar meu atendimento
+          </a>
+          <a class="btn btn--outline-light" href={links.tel}>
+            <Icon name="phone" size={18} /> {clinic.phoneDisplay}
+          </a>
+        </div>
+      </div>
+
+      <div class="cta__photo">
+        <Picture
+          src={img}
+          formats={['avif', 'webp']}
+          widths={[img.width]}
+          sizes="(max-width: 900px) 0px, 420px"
+          alt="Fisioterapeuta da clínica durante atendimento"
+          class="reveal-img"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta { padding-block: clamp(3rem, 6vw, 5rem); background: #f6f8fd; }
+  .cta__panel {
+    position: relative; overflow: hidden; isolation: isolate;
+    display: grid; grid-template-columns: 1.4fr 1fr; align-items: center; gap: 2rem;
+    padding: clamp(2.2rem, 5vw, 4.5rem); border-radius: var(--r-xl);
+    background: linear-gradient(115deg, #18b4ea 0%, #4f8fe0 40%, #9a74dc 75%, #b99be9 100%);
+    box-shadow: 0 30px 70px -30px rgba(79, 70, 200, .6);
+  }
+  .cta__wave { position: absolute; z-index: -1; width: 560px; right: -140px; top: -160px; }
+  .cta__title { color: #fff; font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3.2rem); margin-top: 1rem; max-width: 18ch; }
+  .cta__text { color: rgba(255,255,255,.92); font-size: 1.15rem; margin-top: 1rem; max-width: 48ch; }
+  .cta__actions { display: flex; flex-wrap: wrap; gap: .9rem; margin-top: 2rem; }
+  .cta__photo {
+    justify-self: end; width: min(100%, 380px); aspect-ratio: 1; border-radius: 50%; overflow: hidden;
+    border: 8px solid rgba(255,255,255,.35); box-shadow: 0 30px 60px -25px rgba(30, 20, 90, .6);
+  }
+  .cta__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 46% 50%; }
+
+  @media (max-width: 900px) {
+    .cta__panel { grid-template-columns: 1fr; }
+    .cta__photo { display: none; }
+  }
+  @media (max-width: 480px) { .cta__actions .btn { width: 100%; } }
+</style>

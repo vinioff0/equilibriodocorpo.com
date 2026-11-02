@@ -1,0 +1,153 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import { team, whatsapp } from '../data/site';
+import fotoFono from '../assets/img/clinica/fonoaudiologia.jpg';
+import fotoNeuro from '../assets/img/clinica/fisioterapia-neurologica.jpg';
+import fotoInfantil from '../assets/img/clinica/neuropsicopedagogia.jpg';
+
+/* Fotos de atendimentos da clínica (sem identificar profissionais). */
+const gallery = [
+  { src: fotoFono, alt: 'Profissional da clínica em atendimento de fonoaudiologia com uma criança', pos: '45% 40%' },
+  { src: fotoNeuro, alt: 'Profissional da clínica acompanhando exercício de reabilitação', pos: '62% 45%' },
+  { src: fotoInfantil, alt: 'Profissional da clínica em atividade com uma criança sobre bola terapêutica', pos: '55% 40%' },
+];
+
+/* Enquanto `team` estiver vazio, exibimos cards "em atualização" (sem dados fictícios). */
+const hasTeam = team.length > 0;
+const slots = hasTeam ? team : Array.from({ length: 4 }, () => null);
+---
+
+<section class="section team" id="equipe" aria-labelledby="team-title">
+  <div class="container">
+    <div class="section-head section-head--center" data-reveal>
+      <span class="eyebrow">Nossa Equipe</span>
+      <h2 id="team-title" class="title">
+        Profissionais dedicados <span class="hl">ao seu cuidado.</span>
+      </h2>
+      <p class="lead">
+        Uma equipe multidisciplinar que trabalha de forma integrada, com escuta atenta e atenção
+        individualizada em cada atendimento.
+      </p>
+    </div>
+
+    <div class="team__gallery">
+      {gallery.map((g, i) => (
+        <figure class="team__shot" data-reveal="zoom" style={`--d:${i * 110}ms`}>
+          <Picture src={g.src} formats={['avif', 'webp']} widths={[g.src.width]} sizes="(max-width: 760px) 92vw, 560px" alt={g.alt} class="reveal-img" style={`object-position:${g.pos}`} />
+        </figure>
+      ))}
+    </div>
+
+    <ul class="team__grid" role="list">
+      {slots.map((m, i) => (
+        <li class:list={['member', { 'member--alt': i % 2 === 1, 'member--pending': !m }]} data-reveal style={`--d:${i * 90}ms`}>
+          <div class="member__photo">
+            {m?.photo ? (
+              <Picture src={m.photo} formats={['avif', 'webp']} widths={[240, 400]} sizes="180px" alt={`Foto de ${m.name}`} />
+            ) : (
+              <span class="member__placeholder" aria-hidden="true"><Icon name="user" size={56} /></span>
+            )}
+          </div>
+          {m ? (
+            <>
+              <h3>{m.name}</h3>
+              <p class="member__role">{m.role}</p>
+              {m.registry && <p class="member__reg">{m.registry}</p>}
+              {m.bio && <p class="member__bio">{m.bio}</p>}
+            </>
+          ) : (
+            <>
+              <p class="member__soon">Em breve</p>
+              <p class="member__bio">Perfil profissional em atualização.</p>
+            </>
+          )}
+        </li>
+      ))}
+    </ul>
+
+    <div class="team__note" data-reveal>
+      <p>
+        <strong>Quer saber qual profissional é o mais indicado para você?</strong>
+        Nossa recepção ajuda a encontrar o atendimento certo.
+      </p>
+      <a class="btn btn--primary btn--sm" href={whatsapp('Olá! Gostaria de saber mais sobre os profissionais da Clínica Equilíbrio do Corpo.')} target="_blank" rel="noopener">
+        <Icon name="whatsapp" size={18} /> Falar com a recepção
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .team { background: #fff; }
+  .team__gallery {
+    display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 1.1rem;
+    margin-top: clamp(2.5rem, 5vw, 3.75rem);
+  }
+  .team__shot {
+    margin: 0; position: relative; overflow: hidden; border-radius: var(--r-lg);
+    aspect-ratio: 16 / 10; background: var(--lilac-soft); box-shadow: var(--shadow-md);
+  }
+  .team__shot:first-child { aspect-ratio: auto; }
+  .team__shot :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .team__shot::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.35);
+  }
+  .team__grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.4rem;
+    margin-top: 1.4rem;
+  }
+  .member {
+    display: flex; flex-direction: column; align-items: center; text-align: center;
+    padding: 2.2rem 1.4rem 2rem; border-radius: var(--r-lg);
+    background: linear-gradient(160deg, #1aa6e4 0%, #2f7fdb 100%); color: rgba(255,255,255,.88);
+    box-shadow: var(--shadow-md);
+    transition: transform .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .member--alt { background: linear-gradient(160deg, #3a2a8f 0%, #6a3cc0 100%); }
+  .member:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+
+  .member__photo {
+    width: 150px; height: 150px; border-radius: 50%; overflow: hidden; flex: none;
+    border: 5px solid rgba(255,255,255,.9); background: rgba(255,255,255,.18);
+    box-shadow: 0 16px 30px -14px rgba(0,0,0,.45);
+    transition: transform .5s var(--ease);
+  }
+  .member:hover .member__photo { transform: scale(1.04); }
+  .member__photo :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .member__placeholder { display: grid; place-items: center; width: 100%; height: 100%; color: rgba(255,255,255,.75); }
+
+  .member h3 { color: #fff; font-size: 1.2rem; margin-top: 1.4rem; }
+  .member__role { font-weight: 700; font-size: .95rem; margin-top: .3rem; color: #d7f1fd; }
+  .member--alt .member__role { color: #e1d4fb; }
+  .member__reg { font-size: .8rem; opacity: .8; margin-top: .2rem; }
+  .member__bio { font-size: .93rem; line-height: 1.55; margin-top: .9rem; }
+  .member__soon {
+    margin-top: 1.4rem; padding: .35rem .9rem; border-radius: 999px;
+    background: rgba(255,255,255,.18); color: #fff; font-weight: 800; font-size: .82rem;
+    letter-spacing: .12em; text-transform: uppercase;
+  }
+
+  .team__note {
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem 2rem;
+    margin-top: 2.5rem; padding: 1.3rem 1.6rem; border-radius: var(--r-md);
+    background: var(--grad-soft); border: 1px solid #e2dcf6;
+  }
+  .team__note strong { display: block; color: var(--ink); }
+
+  @media (max-width: 1024px) { .team__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 760px) {
+    .team__gallery { grid-template-columns: 1fr 1fr; gap: .8rem; }
+    .team__shot:first-child { grid-column: 1 / -1; aspect-ratio: 2 / 1; }
+  }
+  @media (max-width: 560px) {
+    .team__grid { gap: .8rem; }
+    .member { padding: 1.4rem .8rem 1.3rem; }
+    .member__photo { width: 92px; height: 92px; border-width: 4px; }
+    .member__placeholder :global(.icon) { width: 38px; height: 38px; }
+    .member h3 { font-size: 1.02rem; margin-top: 1rem; }
+    .member__soon { margin-top: 1rem; font-size: .72rem; }
+    .member__bio { font-size: .84rem; }
+  }
+</style>

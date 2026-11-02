@@ -1,0 +1,182 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import heroImg from '../assets/img/clinica/fisioterapia-atendimento.jpg';
+import { whatsapp, clinic, specialties } from '../data/site';
+---
+
+<section class="hero" id="inicio" aria-labelledby="hero-title">
+  <div class="hero__bg" aria-hidden="true">
+    <span class="orb orb--1"></span>
+    <span class="orb orb--2"></span>
+  </div>
+
+  <div class="container hero__grid">
+    <div class="hero__content">
+      <p class="hero__kicker" data-reveal>
+        <span class="pulse" aria-hidden="true"></span>
+        Clínica multidisciplinar no Centro de Palhoça - SC
+      </p>
+
+      <h1 id="hero-title" class="hero__title" data-reveal style="--d:80ms">
+        Seu bem-estar começa com o <span class="grad-text">cuidado certo.</span>
+      </h1>
+
+      <p class="hero__lead" data-reveal style="--d:160ms">
+        Atendimento humanizado, profissionais qualificados e cuidado multidisciplinar para ajudar
+        você a conquistar mais saúde e qualidade de vida.
+      </p>
+
+      <div class="hero__actions" data-reveal style="--d:240ms">
+        <a class="btn btn--primary" href={whatsapp()} target="_blank" rel="noopener">
+          <Icon name="whatsapp" size={20} /> Agendar pelo WhatsApp
+        </a>
+        <a class="btn btn--ghost" href="#a-clinica">
+          Conheça nossa clínica <Icon name="arrow" size={18} />
+        </a>
+      </div>
+
+      <ul class="hero__trust" data-reveal style="--d:320ms">
+        <li>
+          <strong>{clinic.rating.toLocaleString('pt-BR')}</strong>
+          <span><span class="stars" aria-hidden="true">{Array.from({ length: 5 }).map(() => <Icon name="star" size={14} />)}</span>
+          {clinic.reviewCount} avaliações no Google</span>
+        </li>
+        <li>
+          <strong>{specialties.length}</strong>
+          <span>especialidades<br />em um só lugar</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="hero__visual" data-reveal="zoom" style="--d:120ms">
+      <span class="dots dots--a" aria-hidden="true"></span>
+      <div class="hero__shape" aria-hidden="true"></div>
+      <div class="hero__photo">
+        <Picture
+          src={heroImg}
+          formats={['avif', 'webp']}
+          widths={[heroImg.width]}
+          sizes="(max-width: 900px) 92vw, 520px"
+          alt="Fisioterapeuta realizando atendimento em paciente deitada na maca"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+
+      <div class="float-card float-card--care">
+        <span class="float-card__icon"><Icon name="hands" size={22} /></span>
+        <span><strong>Atendimento humanizado</strong><small>Cuidado individualizado</small></span>
+      </div>
+
+      <div class="float-card float-card--rating">
+        <Icon name="google" size={26} />
+        <span>
+          <strong>{clinic.rating.toLocaleString('pt-BR')} <span class="stars" aria-hidden="true">{Array.from({ length: 5 }).map(() => <Icon name="star" size={13} />)}</span></strong>
+          <small>{clinic.reviewCount} avaliações</small>
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative; overflow: hidden;
+    padding: calc(var(--header-h) + clamp(2rem, 5vw, 4.5rem)) 0 clamp(4rem, 8vw, 6.5rem);
+    background:
+      radial-gradient(1200px 600px at 85% 10%, rgba(197, 178, 240, .35), transparent 60%),
+      radial-gradient(900px 600px at 0% 100%, rgba(24, 180, 234, .14), transparent 60%),
+      linear-gradient(180deg, #f3f8fe 0%, #f6f8fd 100%);
+  }
+  .hero::after {
+    content: ''; position: absolute; inset: auto 0 0; height: 140px; pointer-events: none;
+    background: linear-gradient(180deg, rgba(246, 248, 253, 0), #f6f8fd);
+  }
+  .hero__bg .orb { position: absolute; border-radius: 50%; filter: blur(60px); opacity: .55; }
+  .orb--1 { width: 380px; height: 380px; background: #bfe6fb; left: -140px; top: 20%; }
+  .orb--2 { width: 300px; height: 300px; background: #e3d6fb; right: 30%; bottom: -160px; }
+
+  .hero__grid {
+    position: relative; display: grid; grid-template-columns: 1.05fr .95fr;
+    align-items: center; gap: clamp(2.5rem, 5vw, 5rem);
+  }
+
+  .hero__kicker {
+    display: inline-flex; align-items: center; gap: .6rem;
+    padding: .45rem 1rem .45rem .75rem; border-radius: 999px;
+    background: #fff; border: 1px solid var(--line); box-shadow: var(--shadow-sm);
+    font-size: .88rem; font-weight: 700; color: var(--blue-deep);
+  }
+  .pulse { position: relative; width: 9px; height: 9px; border-radius: 50%; background: var(--cyan); }
+  .pulse::after {
+    content: ''; position: absolute; inset: -5px; border-radius: 50%; border: 2px solid var(--cyan);
+    animation: pulse 2.2s ease-out infinite;
+  }
+  @keyframes pulse { from { transform: scale(.5); opacity: 1; } to { transform: scale(1.6); opacity: 0; } }
+
+  .hero__title {
+    margin-top: 1.4rem;
+    font-size: clamp(2.5rem, 1.4rem + 4.4vw, 4.6rem);
+    letter-spacing: -.035em; line-height: 1.04;
+  }
+  .grad-text {
+    background: var(--grad-brand); -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero__lead { margin-top: 1.5rem; font-size: clamp(1.08rem, 1rem + .35vw, 1.25rem); max-width: 54ch; }
+
+  .hero__actions { display: flex; flex-wrap: wrap; gap: .9rem; margin-top: 2.2rem; }
+
+  .hero__trust { display: flex; flex-wrap: wrap; gap: 1rem 2.4rem; margin-top: 2.6rem; padding-top: 2rem; border-top: 1px solid var(--line); }
+  .hero__trust li { display: flex; align-items: center; gap: .85rem; }
+  .hero__trust strong { font-size: 2.2rem; font-weight: 800; color: var(--ink); letter-spacing: -.03em; line-height: 1; }
+  .hero__trust li > span { font-size: .9rem; line-height: 1.35; color: var(--muted); font-weight: 600; }
+  .hero__trust .stars { display: flex; margin-bottom: .2rem; }
+
+  /* Visual */
+  .hero__visual { position: relative; justify-self: center; width: min(100%, 540px); padding: 1.5rem 0 1.5rem 1.5rem; }
+  .hero__shape {
+    position: absolute; inset: 0 2.5rem 3rem 0; border-radius: 44px 160px 44px 44px;
+    background: var(--grad-brand); box-shadow: var(--shadow-lg);
+  }
+  .hero__shape::after {
+    content: ''; position: absolute; inset: 0; border-radius: inherit;
+    background: radial-gradient(circle at 20% 15%, rgba(255,255,255,.35), transparent 45%);
+  }
+  .hero__photo {
+    position: relative; overflow: hidden; aspect-ratio: 16 / 11;
+    border-radius: 36px 140px 36px 36px; margin-left: 1.5rem; margin-top: 1.5rem;
+    box-shadow: var(--shadow-lg); border: 6px solid #fff; background: #e9eef8;
+  }
+  .hero__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
+  .dots--a { color: var(--purple); right: -12px; bottom: 30px; }
+
+  .float-card {
+    position: absolute; display: flex; align-items: center; gap: .75rem;
+    padding: .85rem 1.1rem; border-radius: 18px; background: rgba(255,255,255,.95);
+    box-shadow: var(--shadow-md); backdrop-filter: blur(8px);
+    animation: float 6s ease-in-out infinite;
+  }
+  .float-card strong { display: flex; align-items: center; gap: .4rem; color: var(--ink); font-size: .95rem; line-height: 1.2; }
+  .float-card small { display: block; color: var(--muted); font-size: .8rem; font-weight: 600; }
+  .float-card__icon {
+    display: grid; place-items: center; width: 42px; height: 42px; border-radius: 12px;
+    background: var(--lilac-soft); color: var(--purple);
+  }
+  .float-card--care { left: -2.2rem; bottom: 18%; }
+  .float-card--rating { right: -1rem; top: 12%; animation-delay: -3s; }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
+  @media (max-width: 900px) {
+    .hero__grid { grid-template-columns: 1fr; }
+    .hero__content { text-align: left; }
+    .hero__visual { width: min(100%, 460px); }
+    .float-card--care { left: 0; }
+    .float-card--rating { right: 0; }
+  }
+  @media (max-width: 480px) {
+    .hero__actions .btn { width: 100%; }
+    .float-card { padding: .65rem .85rem; }
+    .float-card--care { bottom: 8%; }
+  }
+</style>

@@ -1,0 +1,91 @@
+---
+import { Picture } from 'astro:assets';
+import Icon from './Icon.astro';
+import img from '../assets/img/clinica/psicologia.jpg';
+import { differentials } from '../data/site';
+---
+
+<section class="section diff" aria-labelledby="diff-title">
+  <div class="container">
+    <div class="diff__panel">
+      <span class="diff__ring diff__ring--1" aria-hidden="true"></span>
+      <span class="diff__ring diff__ring--2" aria-hidden="true"></span>
+
+      <div class="diff__intro" data-reveal>
+        <span class="eyebrow eyebrow--light">Nossos diferenciais</span>
+        <h2 id="diff-title" class="title diff__title">
+          Por que escolher a <span>Equilíbrio do Corpo?</span>
+        </h2>
+        <p class="diff__lead">
+          Cuidar da sua saúde é cuidar de você como um todo, com proximidade, respeito e dedicação.
+        </p>
+        <div class="diff__photo">
+          <Picture
+            src={img}
+            formats={['avif', 'webp']}
+            widths={[img.width]}
+            sizes="(max-width: 960px) 0px, 340px"
+            alt="Profissional da clínica em atendimento acolhedor com paciente"
+            class="reveal-img"
+          />
+        </div>
+      </div>
+
+      <ul class="diff__grid" role="list">
+        {differentials.map((d, i) => (
+          <li class="diff__item" data-reveal style={`--d:${i * 70}ms`}>
+            <span class:list={['diff__icon', { 'diff__icon--lilac': i % 2 === 1 }]}><Icon name={d.icon} size={26} /></span>
+            <h3>{d.title}</h3>
+            <p>{d.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .diff { padding-top: 0; background: #fff; }
+  .diff__panel {
+    position: relative; overflow: hidden; isolation: isolate;
+    display: grid; grid-template-columns: .85fr 1.6fr; gap: clamp(2rem, 5vw, 4.5rem);
+    padding: clamp(2.2rem, 5vw, 4.5rem); border-radius: var(--r-xl);
+    background: var(--grad-deep); color: rgba(255,255,255,.82);
+  }
+  .diff__ring { position: absolute; z-index: -1; border-radius: 50%; border: 1px solid rgba(255,255,255,.12); }
+  .diff__ring--1 { width: 520px; height: 520px; right: -160px; top: -220px; }
+  .diff__ring--2 { width: 340px; height: 340px; left: -120px; bottom: -160px; background: radial-gradient(circle, rgba(24,180,234,.25), transparent 70%); border: 0; }
+
+  .diff__title { color: #fff; }
+  .diff__title span { color: #8fd8f8; }
+  .diff__lead { margin-top: 1.1rem; font-size: 1.08rem; }
+  .diff__photo {
+    margin-top: 2rem; aspect-ratio: 4 / 3.4; border-radius: 26px; overflow: hidden;
+    border: 5px solid rgba(255,255,255,.12);
+  }
+  .diff__photo :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 72% 50%; }
+
+  .diff__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; align-content: center; }
+  .diff__item {
+    padding: 1.6rem 1.4rem; border-radius: var(--r-md);
+    background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.12);
+    backdrop-filter: blur(6px);
+    transition: background-color .3s, transform .4s var(--ease), border-color .3s;
+  }
+  .diff__item:hover { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.25); transform: translateY(-5px); }
+  .diff__icon {
+    display: grid; place-items: center; width: 54px; height: 54px; border-radius: 16px;
+    background: linear-gradient(145deg, #18b4ea, #2f7fdb); color: #fff;
+    box-shadow: 0 12px 24px -12px rgba(24, 180, 234, .8);
+  }
+  .diff__icon--lilac { background: linear-gradient(145deg, #b58bea, #7a45c8); box-shadow: 0 12px 24px -12px rgba(181, 139, 234, .8); }
+  .diff__item h3 { color: #fff; font-size: 1.1rem; margin: 1.2rem 0 .5rem; }
+  .diff__item p { font-size: .94rem; line-height: 1.55; }
+
+  @media (max-width: 1100px) {
+    .diff__panel { grid-template-columns: 1fr; }
+    .diff__photo { display: none; }
+  }
+  @media (max-width: 760px) { .diff__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .diff__grid { grid-template-columns: 1fr; } }
+</style>

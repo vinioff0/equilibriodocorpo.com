@@ -1,0 +1,98 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import { nav, specialties, clinic, links, whatsapp } from '../data/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <Logo variant="light" />
+        <p>
+          Clínica multidisciplinar no Centro de Palhoça - SC, dedicada à saúde, à recuperação e ao
+          bem-estar, com atendimento humanizado e cuidado individualizado.
+        </p>
+        <div class="footer__social">
+          <a href={clinic.instagramUrl} target="_blank" rel="noopener" aria-label="Instagram da clínica"><Icon name="instagram" size={20} /></a>
+          <a href={whatsapp()} target="_blank" rel="noopener" aria-label="WhatsApp da clínica"><Icon name="whatsapp" size={20} /></a>
+          <a href={links.maps} target="_blank" rel="noopener" aria-label="Localização no Google Maps"><Icon name="pin" size={20} /></a>
+        </div>
+      </div>
+
+      <nav aria-label="Links do rodapé">
+        <h2 class="footer__title">Navegação</h2>
+        <ul class="footer__links">
+          {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+        </ul>
+      </nav>
+
+      <div>
+        <h2 class="footer__title">Especialidades</h2>
+        <ul class="footer__links footer__links--cols">
+          {specialties.map((s) => <li><a href="#especialidades">{s.shortName}</a></li>)}
+        </ul>
+      </div>
+
+      <div>
+        <h2 class="footer__title">Contato</h2>
+        <ul class="footer__contact">
+          <li><Icon name="pin" size={18} /><span>{clinic.address}</span></li>
+          <li><Icon name="phone" size={18} /><a href={links.tel}>{clinic.phoneDisplay}</a></li>
+          <li><Icon name="instagram" size={18} /><a href={clinic.instagramUrl} target="_blank" rel="noopener">{clinic.instagramHandle}</a></li>
+        </ul>
+        <a class="btn btn--primary btn--sm footer__cta" href={whatsapp()} target="_blank" rel="noopener">
+          <Icon name="whatsapp" size={18} /> Agendar Consulta
+        </a>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© {year} {clinic.name}. Todos os direitos reservados.</p>
+      <a href="#inicio" class="footer__top">Voltar ao topo <Icon name="arrow" size={16} /></a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    position: relative; overflow: hidden; color: rgba(255,255,255,.72);
+    background:
+      radial-gradient(700px 400px at 100% 0%, rgba(122, 69, 200, .35), transparent 60%),
+      radial-gradient(600px 400px at 0% 100%, rgba(24, 180, 234, .18), transparent 60%),
+      #0e1640;
+    padding: clamp(3.5rem, 7vw, 5.5rem) 0 1.75rem;
+    font-size: .96rem;
+  }
+  .footer__grid { display: grid; grid-template-columns: 1.3fr .8fr 1.2fr 1.2fr; gap: 2.5rem; }
+  .footer__brand p { margin-top: 1.3rem; max-width: 36ch; line-height: 1.7; }
+  .footer__social { display: flex; gap: .6rem; margin-top: 1.5rem; }
+  .footer__social a {
+    display: grid; place-items: center; width: 44px; height: 44px; border-radius: 13px;
+    background: rgba(255,255,255,.08); color: #fff; transition: background-color .25s, transform .25s;
+  }
+  .footer__social a:hover { background: var(--purple); transform: translateY(-3px); }
+
+  .footer__title { font-size: .8rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: #fff; margin-bottom: 1.2rem; }
+  .footer__links { display: grid; gap: .65rem; }
+  .footer__links--cols { grid-template-columns: 1fr 1fr; gap: .55rem 1rem; }
+  .footer__links a { transition: color .2s; }
+  .footer__links a:hover { color: #8fd8f8; }
+
+  .footer__contact { display: grid; gap: .9rem; }
+  .footer__contact li { display: flex; gap: .65rem; align-items: flex-start; line-height: 1.5; }
+  .footer__contact :global(.icon) { flex: none; margin-top: .15rem; color: #b99be9; }
+  .footer__contact a:hover { color: #fff; }
+  .footer__cta { margin-top: 1.5rem; }
+
+  .footer__bottom {
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    margin-top: 3.5rem; padding-top: 1.6rem; border-top: 1px solid rgba(255,255,255,.1); font-size: .88rem;
+  }
+  .footer__top { display: inline-flex; align-items: center; gap: .4rem; font-weight: 700; color: #fff; }
+  .footer__top :global(.icon) { transform: rotate(-90deg); }
+
+  @media (max-width: 1024px) { .footer__grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .footer__grid { grid-template-columns: 1fr; } }
+</style>
